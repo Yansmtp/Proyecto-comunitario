@@ -46,6 +46,11 @@ create table if not exists public.multimedia (
   created_at timestamptz not null default now()
 );
 
+-- Foto para testimonios e historias (diario): son imágenes optimizadas
+-- guardadas como data-URI en la propia fila.
+alter table public.testimonios add column if not exists imagen text;
+alter table public.entradas   add column if not exists imagen text;
+
 -- ============================================================
 --  SEGURIDAD (RLS)
 --  - Público (anon): solo puede LEER.

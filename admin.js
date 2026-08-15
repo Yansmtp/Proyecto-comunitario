@@ -11,7 +11,8 @@ const SECCIONES = [
     campos: [
       { k: 'titulo', l: 'Título', t: 'text' },
       { k: 'descripcion', l: 'Descripción', t: 'textarea' },
-      { k: 'autor', l: 'Autor', t: 'text' }
+      { k: 'autor', l: 'Autor', t: 'text' },
+      { k: 'imagen', l: 'Foto (opcional)', t: 'imagen' }
     ]
   },
   {
@@ -19,7 +20,8 @@ const SECCIONES = [
     campos: [
       { k: 'fecha', l: 'Fecha (ej. 15 AGO)', t: 'text' },
       { k: 'titulo', l: 'Título', t: 'text' },
-      { k: 'resumen', l: 'Resumen', t: 'textarea' }
+      { k: 'resumen', l: 'Resumen', t: 'textarea' },
+      { k: 'imagen', l: 'Foto (opcional)', t: 'imagen' }
     ]
   },
   {
@@ -33,7 +35,7 @@ const SECCIONES = [
     clave: 'multimedia', nombre: 'Galería', tabla: 'multimedia',
     campos: [
       { k: 'tipo', l: 'Tipo', t: 'select', opciones: ['galeria', 'taller'] },
-      { k: 'url', l: 'URL de la imagen o data-URI', t: 'textarea' }
+      { k: 'url', l: 'Imagen', t: 'imagen' }
     ]
   }
 ];
@@ -111,9 +113,9 @@ function renderLista() {
     const titulo = String(fila[seccionActual.campos[0].k] ?? '');
     const sub = seccionActual.campos[1] ? String(fila[seccionActual.campos[1].k] ?? '') : '';
     const activo = fila.activo !== false;
-    const esImg = seccionActual.clave === 'multimedia' &&
-      (/^data:/.test(fila.url) || /^https?:\/\//.test(fila.url));
-    const thumb = esImg ? `<div class="item-thumb" style="background-image:url('${fila.url.replace(/'/g, "%27")}')"></div>` : '';
+    const imgVal = fila.imagen || fila.url || '';
+    const esImg = /^data:image\//.test(imgVal) || /^https?:\/\//.test(imgVal) || /^data:image\/svg/.test(imgVal);
+    const thumb = esImg ? `<img class="item-thumb-img" src="${escapeHtml(imgVal)}" alt="">` : '';
     const accionesBotones = `
       <button class="btn btn-outline btn-mini" data-acc="toggle">${activo ? 'Ocultar' : 'Publicar'}</button>
       <button class="btn btn-outline btn-mini" data-acc="editar">Editar</button>
@@ -152,6 +154,98 @@ function mostrarEstadoConexion() {
 }
 
 // ----------------------------- FORMULARIO ----------------------------
+// Procesa una imagen elegida: la redimensiona y la convierte a
+// data-URI para guardarla (y mostrarla) sin necesidad de servidor.
+function procesarImagen(file, maxDim = 1200, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo'));
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let { width, height } = img;
+        const escala = Math.min(1, maxDim / Math.max(width, height));
+        width = Math.max(1, Math.round(width * escala));
+        height = Math.max(1, Math.round(height * escala));
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        const tipo = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        resolve(canvas.toDataURL(tipo, quality));
+      };
+      img.onerror = () => reject(new Error('La imagen no se pudo decodificar'));
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderCampoImagen(c, valor) {
+  const preview = valor ? `<img src="${escapeHtml(valor)}" alt="Vista previa">` : '';
+  return `
+    <div class="campo">
+      <label>${escapeHtml(c.l)}</label>
+      <div class="img-drop" data-imagen-campo>
+        <input type="hidden" data-k="${c.k}" value="${escapeHtml(valor)}" />
+        <input type="file" accept="image/*" style="display:none" />
+        <input type="url" class="img-url" placeholder="O pega aquí el enlace de una imagen (opcional)" />
+        <div class="img-tools">
+          <button type="button" class="btn btn-outline btn-sm" data-browse>📷 Añadir foto</button>
+          <button type="button" class="btn btn-outline btn-sm" data-remove>Quitar foto</button>
+        </div>
+        <div class="img-preview" data-preview>${preview}</div>
+        <p class="img-ayuda">Pulsa «Añadir foto» o arrastra una imagen aquí desde tu equipo o galería.</p>
+      </div>
+    </div>`;
+}
+
+function configurarSubida(container) {
+  const fileInput = container.querySelector('input[type=file]');
+  const hidden = container.querySelector('input[type=hidden]');
+  const preview = container.querySelector('[data-preview]');
+  const urlInput = container.querySelector('.img-url');
+
+  const aplicarArchivo = async (file) => {
+    if (!file || !file.type.startsWith('image/')) {
+      mostrarMensaje('Ese archivo no es una imagen válida.', 'error');
+      return;
+    }
+    try {
+      const uri = await procesarImagen(file);
+      hidden.value = uri;
+      preview.innerHTML = `<img src="${escapeHtml(uri)}" alt="Vista previa">`;
+      urlInput.value = '';
+      mostrarMensaje('✅ Foto añadida correctamente.');
+    } catch (err) {
+      mostrarMensaje('No se pudo procesar la imagen: ' + err.message, 'error');
+    }
+  };
+
+  container.querySelector('[data-browse]').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files && fileInput.files[0]) aplicarArchivo(fileInput.files[0]);
+    fileInput.value = '';
+  });
+  container.addEventListener('dragover', (e) => { e.preventDefault(); container.classList.add('dragover'); });
+  container.addEventListener('dragleave', () => container.classList.remove('dragover'));
+  container.addEventListener('drop', (e) => {
+    e.preventDefault();
+    container.classList.remove('dragover');
+    if (e.dataTransfer && e.dataTransfer.files[0]) aplicarArchivo(e.dataTransfer.files[0]);
+  });
+  container.querySelector('[data-remove]').addEventListener('click', () => {
+    hidden.value = '';
+    urlInput.value = '';
+    preview.innerHTML = '';
+  });
+  urlInput.addEventListener('input', () => {
+    const val = urlInput.value.trim();
+    hidden.value = val;
+    preview.innerHTML = val ? `<img src="${escapeHtml(val)}" alt="Vista previa">` : '';
+  });
+}
+
 function abrirFormulario(fila) {
   editandoId = fila ? fila.id : null;
   tituloFormulario.textContent = fila ? 'Editar elemento' : 'Añadir nuevo';
@@ -164,8 +258,13 @@ function abrirFormulario(fila) {
       const opts = c.opciones.map((o) => `<option value="${o}"${o === valor ? ' selected' : ''}>${o}</option>`).join('');
       return `<div class="campo"><label>${escapeHtml(c.l)}</label><select data-k="${c.k}">${opts}</select></div>`;
     }
+    if (c.t === 'imagen') {
+      return renderCampoImagen(c, valor);
+    }
     return `<div class="campo"><label>${escapeHtml(c.l)}</label><input type="${c.t === 'text' ? 'text' : c.t}" data-k="${c.k}" value="${escapeHtml(valor)}" /></div>`;
   }).join('');
+  // Activar subida de imágenes en los campos de foto
+  camposForm.querySelectorAll('[data-imagen-campo]').forEach((container) => configurarSubida(container));
   formulario.classList.remove('hidden');
 }
 

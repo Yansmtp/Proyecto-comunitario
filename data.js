@@ -23,6 +23,7 @@ function renderTestimonios(lista) {
   if (!container) return;
   container.innerHTML = (lista || []).map((t) => `
       <div class="historia-card">
+        ${t.imagen ? `<img class="historia-img" src="${escaparHTML(t.imagen)}" alt="">` : ''}
         <h3>${escaparHTML(t.titulo)}</h3>
         <p>${escaparHTML(t.descripcion)}</p>
         <span class="nombre">— ${escaparHTML(t.autor)}</span>
@@ -35,6 +36,7 @@ function renderDiario(lista) {
   if (!container) return;
   container.innerHTML = (lista || []).map((e) => `
       <div class="diario-card">
+        ${e.imagen ? `<img class="diario-img" src="${escaparHTML(e.imagen)}" alt="">` : ''}
         <span class="fecha">${escaparHTML(e.fecha)}</span>
         <h4>${escaparHTML(e.titulo)}</h4>
         <p>${escaparHTML(e.resumen)}</p>
@@ -83,8 +85,8 @@ async function obtenerRemoto() {
   // los DATOS_INICIALES como respaldo para que las secciones no se vean vacías.
   const usar = (arr, mapa, porDefecto) => (arr && arr.length) ? arr.map(mapa) : porDefecto;
   return {
-    testimonios: usar(testimonios, (r) => ({ titulo: r.titulo, descripcion: r.descripcion, autor: r.autor }), DATOS_INICIALES.testimonios),
-    entradas: usar(entradas, (r) => ({ fecha: r.fecha, titulo: r.titulo, resumen: r.resumen }), DATOS_INICIALES.entradas),
+    testimonios: usar(testimonios, (r) => ({ titulo: r.titulo, descripcion: r.descripcion, autor: r.autor, imagen: r.imagen || '' }), DATOS_INICIALES.testimonios),
+    entradas: usar(entradas, (r) => ({ fecha: r.fecha, titulo: r.titulo, resumen: r.resumen, imagen: r.imagen || '' }), DATOS_INICIALES.entradas),
     estadisticas: usar(estadisticas, (r) => ({ numero: r.numero, etiqueta: r.etiqueta }), DATOS_INICIALES.estadisticas),
     multimedia: usar(multimedia, (r) => r.url, DATOS_INICIALES.multimedia.map((m) => m.url))
   };

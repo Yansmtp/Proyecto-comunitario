@@ -71,6 +71,47 @@ function mostrarMensaje(texto, tipo) {
   clearTimeout(mostrarMensaje._t);
   mostrarMensaje._t = setTimeout(() => mensaje.classList.add('hidden'), 3500);
 }
+let toastTimer = null;
+function mostrarToast(titulo, msg, tipo) {
+  const t = $('toast');
+  $('toastTitulo').textContent = titulo;
+  $('toastMsg').textContent = msg || '';
+  $('toastIcon').textContent = tipo === 'error' ? '⚠️' : (tipo === 'warn' ? 'ℹ️' : '✅');
+  t.classList.remove('toast-error', 'toast-warn');
+  if (tipo === 'error') t.classList.add('toast-error');
+  if (tipo === 'warn') t.classList.add('toast-warn');
+  t.classList.remove('hidden');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(ocultarToast, 5500);
+}
+function ocultarToast() {
+  clearTimeout(toastTimer);
+  $('toast').classList.add('hidden');
+}
+
+// ------------------------- VISTA PREVIA -------------------------
+function alternarPreview() {
+  const drawer = $('previewDrawer');
+  if (drawer.classList.contains('hidden')) {
+    drawer.classList.remove('hidden');
+    recargarPreview(true);
+  } else {
+    drawer.classList.add('hidden');
+  }
+}
+function recargarPreview(forzar = false) {
+  const frame = $('previewFrame');
+  if (forzar || frame.src === 'about:blank') {
+    frame.src = 'index.html';
+  } else {
+    const src = frame.src;
+    frame.src = 'about:blank';
+    setTimeout(() => { frame.src = src; }, 60);
+  }
+}
+function cerrarPreview() {
+  $('previewDrawer').classList.add('hidden');
+}
 function guardarLocal(tabla, filasArr) {
   localStorage.setItem(KEY_LOCAL + tabla, JSON.stringify(filasArr));
 }
@@ -304,6 +345,7 @@ async function guardarFila() {
     }
     cerrarFormulario();
     mostrarMensaje('Guardado correctamente.');
+    mostrarToast('✅ Cambios publicados', 'Ya se reflejan en la web para todos los visitantes.');
     await cargarTabla(seccionActual);
   } catch (err) {
     mostrarMensaje('Error al guardar: ' + err.message, 'error');
@@ -316,7 +358,8 @@ function filaPorId(id) {
 }
 
 async function alternarActivo(fila) {
-  const nuevo = { activo: fila.activo === false };
+  const publicando = fila.activo === false;
+  const nuevo = { activo: publicando };
   try {
     if (configurado) {
       await api.actualizar(seccionActual.tabla, fila.id, nuevo);
@@ -325,9 +368,14 @@ async function alternarActivo(fila) {
       filas[idx].activo = nuevo.activo;
       guardarLocal(seccionActual.tabla, filas);
     }
+    mostrarToast(
+      publicando ? '👁 Publicado en la web' : '🙈 Oculto de la web',
+      publicando ? 'Los visitantes ya pueden ver este elemento.' : 'Este elemento ya no se muestra en la web.'
+    );
     await cargarTabla(seccionActual);
   } catch (err) {
     mostrarMensaje('Error: ' + err.message, 'error');
+    mostrarToast('⚠️ No se pudo actualizar', err.message, 'error');
   }
 }
 
@@ -341,6 +389,7 @@ async function eliminarFila(fila) {
       guardarLocal(seccionActual.tabla, filas);
     }
     mostrarMensaje('Elemento eliminado.');
+    mostrarToast('🗑 Elemento eliminado', 'Se quitó de la web y de la base de datos.');
     await cargarTabla(seccionActual);
   } catch (err) {
     mostrarMensaje('Error al eliminar: ' + err.message, 'error');
@@ -410,6 +459,10 @@ function conectarEventos() {
     }
   });
   $('btnLogout').addEventListener('click', salir);
+  $('btnPreview').addEventListener('click', alternarPreview);
+  $('btnRecargar').addEventListener('click', () => recargarPreview(false));
+  $('btnCerrarPreview').addEventListener('click', cerrarPreview);
+  $('toastClose').addEventListener('click', ocultarToast);
   $('btnNuevo').addEventListener('click', () => abrirFormulario(null));
   $('btnGuardar').addEventListener('click', guardarFila);
   $('btnCancelar').addEventListener('click', cerrarFormulario);

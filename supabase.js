@@ -24,8 +24,18 @@ async function request(path, { method = 'GET', body, prefer } = {}) {
   if (prefer) headers.Prefer = prefer;
   const res = await fetch(`${BASE}/rest/v1/${path}`, cfg);
   if (!res.ok) {
-    const texto = await res.text();
-    throw new Error(`${method} ${path} -> ${res.status}: ${texto.slice(0, 200)}`);
+    let msg = `Error ${res.status}`;
+    const json = await res.json().catch(() => null);
+    if (json) {
+      if (json.message) msg = json.message;
+      if (json.hint) msg += ` — ${json.hint}`;
+    } else {
+      const texto = await res.text().catch(() => '');
+      if (texto) msg = texto.slice(0, 300);
+    }
+    const err = new Error(msg);
+    err.status = res.status;
+    throw err;
   }
   return res.status === 204 || res.status === 201 && body === undefined ? null : res.json();
 }

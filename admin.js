@@ -348,7 +348,15 @@ async function guardarFila() {
     mostrarToast('✅ Cambios publicados', 'Ya se reflejan en la web para todos los visitantes.');
     await cargarTabla(seccionActual);
   } catch (err) {
+    const esColumna = /column|imagen|does not exist|relation/i.test(err.message || '');
     mostrarMensaje('Error al guardar: ' + err.message, 'error');
+    mostrarToast(
+      '⚠️ No se pudo guardar',
+      esColumna
+        ? 'Falta una columna en la base de datos. Ejecuta el supabase.sql actualizado en el SQL Editor de Supabase y vuelve a intentar.'
+        : err.message || 'Ocurrió un error inesperado.',
+      'error'
+    );
   }
 }
 

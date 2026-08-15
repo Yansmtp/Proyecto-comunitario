@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tejiendo Vida · proyecto artesanal</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+      <div class="logo">Tejiendo<span>Vida</span></div>
+      <div class="nav-links">
+        <a href="#proyecto">Proyecto</a>
+        <a href="#historias">Historias</a>
+        <a href="#talleres">Talleres</a>
+        <a href="#diario">Diario</a>
+        <a href="#colaborar">Colaborar</a>
+      </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <div class="hero-imagen"></div>
+      <div class="hero-texto">
+        <h1>Crear con las manos.<br />Reconstruir una vida.</h1>
+        <p>Un espacio de aprendizaje, creatividad y nuevas oportunidades para mujeres que están construyendo un nuevo capítulo de sus vidas.</p>
+        <div class="hero-botones">
+          <a href="#proyecto" class="btn btn-primario">Conoce nuestro proyecto</a>
+          <a href="#historias" class="btn btn-secundario">Descubre nuestras historias</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INTRO ===== -->
+    <section class="intro" id="proyecto">
+      <div class="intro-imagen"></div>
+      <div class="intro-texto">
+        <h2>Más que un taller, un nuevo comienzo.</h2>
+        <p>Utilizamos la artesanía, la educación y el acompañamiento comunitario como herramientas para generar nuevas oportunidades. Cada puntada, cada pincelada, cada aprendizaje es un paso firme hacia la autonomía y la dignidad.</p>
+      </div>
+    </section>
+
+    <!-- ===== IMPACTO ===== -->
+    <section class="impacto">
+      <h2>Impacto</h2>
+      <div class="impacto-grid" id="impactoContainer"></div>
+      <div class="impacto-frase">"Cada número representa una historia, una oportunidad y un paso hacia adelante."</div>
+    </section>
+
+    <!-- ===== HISTORIAS (dinámico) ===== -->
+    <section class="historias" id="historias">
+      <h2>Historias que transforman</h2>
+      <div class="historias-grid" id="testimoniosContainer"></div>
+    </section>
+
+    <!-- ===== TALLERES ===== -->
+    <section class="talleres" id="talleres">
+      <h2>Talleres y actividades</h2>
+      <div class="galeria-talleres">
+        <div class="taller-item"></div>
+        <div class="taller-item"></div>
+        <div class="taller-item"></div>
+        <div class="taller-item"></div>
+        <div class="taller-item"></div>
+        <div class="taller-item"></div>
+      </div>
+    </section>
+
+    <!-- ===== DIARIO (dinámico) ===== -->
+    <section class="diario" id="diario">
+      <h2>Lo que está pasando</h2>
+      <div class="diario-grid" id="diarioContainer"></div>
+      <div class="diario-boton">
+        <a href="#" class="btn btn-outline-claro">Ver todas las historias</a>
+      </div>
+    </section>
+
+    <!-- ===== GALERÍA FOTOS (dinámica) ===== -->
+    <section class="galeria-fotos" id="galeria">
+      <h2>Galería · momentos reales</h2>
+      <div class="grid-fotos" id="galeriaContainer"></div>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta" id="colaborar">
+      <h2>Una nueva oportunidad también puede comenzar aquí.</h2>
+      <p>Hay muchas formas de formar parte de este proyecto: compartir, colaborar, enseñar, donar o simplemente contar nuestra historia.</p>
+      <div class="cta-botones">
+        <a href="#colaborar" class="btn btn-primario">Quiero colaborar</a>
+        <a href="#talleres" class="btn btn-secundario">Conocer más</a>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">TejiendoVida</div>
+          <p>Artesanía, educación y comunidad para la reconstrucción de vidas.</p>
+        </div>
+        <div>
+          <a href="#proyecto">Proyecto</a>
+          <a href="#historias">Historias</a>
+          <a href="#talleres">Talleres</a>
+        </div>
+        <div>
+          <a href="#diario">Diario</a>
+          <a href="#galeria">Galería</a>
+          <a href="#colaborar">Colaborar</a>
+        </div>
+        <div>
+          <a href="#">Contacto</a>
+          <a href="#">Política de privacidad</a>
+          <a href="#">Redes sociales</a>
+        </div>
+      </div>
+      <div class="footer-copy">© 2026 Tejiendo Vida · Todos los derechos reservados</div>
+    </div>
+  </footer>
+
+  <!-- ===== DATA + RENDERIZADORES ===== -->
+    <script type="module" src="data.js"></script>
+
+</body>
+</html>

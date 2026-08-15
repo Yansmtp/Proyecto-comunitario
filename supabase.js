@@ -22,7 +22,7 @@ async function request(path, { method = 'GET', body, prefer } = {}) {
     cfg.body = JSON.stringify(body);
   }
   if (prefer) headers.Prefer = prefer;
-  const res = await fetch(`${BASE}/rest/v1${path}`, cfg);
+  const res = await fetch(`${BASE}/rest/v1/${path}`, cfg);
   if (!res.ok) {
     const texto = await res.text();
     throw new Error(`${method} ${path} -> ${res.status}: ${texto.slice(0, 200)}`);

@@ -79,11 +79,14 @@ async function obtenerRemoto() {
     api.listar('estadisticas'),
     api.listar('multimedia')
   ]);
+  // Si una colección está vacía (base nueva sin contenido), se usan
+  // los DATOS_INICIALES como respaldo para que las secciones no se vean vacías.
+  const usar = (arr, mapa, porDefecto) => (arr && arr.length) ? arr.map(mapa) : porDefecto;
   return {
-    testimonios: (testimonios || []).map((r) => ({ titulo: r.titulo, descripcion: r.descripcion, autor: r.autor })),
-    entradas: (entradas || []).map((r) => ({ fecha: r.fecha, titulo: r.titulo, resumen: r.resumen })),
-    estadisticas: (estadisticas || []).map((r) => ({ numero: r.numero, etiqueta: r.etiqueta })),
-    multimedia: (multimedia || []).map((r) => r.url)
+    testimonios: usar(testimonios, (r) => ({ titulo: r.titulo, descripcion: r.descripcion, autor: r.autor }), DATOS_INICIALES.testimonios),
+    entradas: usar(entradas, (r) => ({ fecha: r.fecha, titulo: r.titulo, resumen: r.resumen }), DATOS_INICIALES.entradas),
+    estadisticas: usar(estadisticas, (r) => ({ numero: r.numero, etiqueta: r.etiqueta }), DATOS_INICIALES.estadisticas),
+    multimedia: usar(multimedia, (r) => r.url, DATOS_INICIALES.multimedia.map((m) => m.url))
   };
 }
 

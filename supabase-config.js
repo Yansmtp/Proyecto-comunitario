@@ -18,7 +18,7 @@
 // URL de la API REST de Supabase (Settings > API > Project URL)
 export const SUPABASE_URL = "https://gtkpsjqcsqiokgsnylqe.supabase.co";
 // La anon key (Settings > API > anon public key) se copia aquí.
-export const SUPABASE_ANON_KEY = "";
+export const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd0a3BzanFjc3Fpb2tnc255bHFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4MDEwMDMsImV4cCI6MjEwMjM3NzAwM30.Aygoq0NlQwobZhXPpS-BoH11-xOG7KaB0l6kp_d0EyY";
 
 // Clave de acceso del panel de administración (admin.html).
 // Cámbiala por una segura antes de publicar.

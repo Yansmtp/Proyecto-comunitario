@@ -79,6 +79,17 @@ create policy "escritura_admin multimedia" on public.multimedia
   for all using (true) with check (true);
 
 -- ============================================================
+--  PERMISOS (imprescindible: por SQL hay que conceder acceso al
+--  rol "anon" y "authenticated"; si no, la API devuelve 404).
+-- ============================================================
+grant usage on schema public to anon, authenticated;
+
+grant all on public.testimonios  to anon, authenticated;
+grant all on public.entradas     to anon, authenticated;
+grant all on public.estadisticas to anon, authenticated;
+grant all on public.multimedia   to anon, authenticated;
+
+-- ============================================================
 -- NOTA DE SEGURIDAD:
 -- Las políticas "escritura_admin" permiten escribir con la anon key
 -- (útil para el panel). En producción SIEMPRE activa Supabase Auth

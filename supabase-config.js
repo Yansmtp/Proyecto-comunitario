@@ -14,7 +14,10 @@
 //  como respaldo y el panel solo guarda en el navegador local.
 // ============================================================
 
-export const SUPABASE_URL = "";
+// Proyecto (ref): gtkpsjqcsqiokgsnylqe
+// URL de la API REST de Supabase (Settings > API > Project URL)
+export const SUPABASE_URL = "https://gtkpsjqcsqiokgsnylqe.supabase.co";
+// La anon key (Settings > API > anon public key) se copia aquí.
 export const SUPABASE_ANON_KEY = "";
 
 // Clave de acceso del panel de administración (admin.html).

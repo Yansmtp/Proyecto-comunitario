@@ -25,6 +25,9 @@
         <a href="#diario">Diario</a>
         <a href="#colaborar">Colaborar</a>
       </div>
+      <button type="button" class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </nav>
 
     <!-- ===== HERO ===== -->
@@ -131,6 +134,25 @@
 
   <!-- ===== DATA + RENDERIZADORES ===== -->
     <script type="module" src="data.js"></script>
+
+    <!-- Menú móvil -->
+    <script>
+      (function () {
+        var btn = document.getElementById('navToggle');
+        var links = document.querySelector('.navbar .nav-links');
+        if (!btn || !links) return;
+        btn.addEventListener('click', function () {
+          var abierto = links.classList.toggle('open');
+          btn.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+        });
+        links.querySelectorAll('a').forEach(function (enlace) {
+          enlace.addEventListener('click', function () {
+            links.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+          });
+        });
+      })();
+    </script>
 
 </body>
 </html>

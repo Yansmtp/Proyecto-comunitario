@@ -549,13 +549,19 @@ button {
   }
   .admin-tabs {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
   }
   .admin-tabs button {
+    white-space: nowrap;
     border-left: none;
     border-bottom: 2px solid transparent;
   }
   .admin-tabs button.activo {
     border-bottom-color: #ff6f61;
+  }
+  .preview-drawer {
+    width: calc(100% - 2rem);
   }
 }

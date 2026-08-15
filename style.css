@@ -39,7 +39,7 @@ h3,
 }
 
 h2 {
-  font-size: 2.8rem;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
   line-height: 1.2;
   margin-bottom: 1.5rem;
   color: #0000B0;
@@ -134,6 +134,25 @@ h2 {
   border-bottom-color: #ff6f61;
 }
 
+/* Botón de menú (solo aparece en pantallas pequeñas) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}
+.nav-toggle span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background: #0000B0;
+  border-radius: 2px;
+  transition: 0.3s;
+}
+
 /* ===== HERO ===== */
 .hero {
   display: grid;
@@ -159,7 +178,7 @@ h2 {
 }
 
 .hero-texto h1 {
-  font-size: 3.8rem;
+  font-size: clamp(2.2rem, 7vw, 3.8rem);
   line-height: 1.1;
   margin-bottom: 1.2rem;
   color: #0000B0;
@@ -199,7 +218,7 @@ h2 {
   transform: scale(1.01);
 }
 .intro-texto h2 {
-  font-size: 2.6rem;
+  font-size: clamp(1.9rem, 4.5vw, 2.6rem);
 }
 .intro-texto p {
   font-size: 1.05rem;
@@ -226,7 +245,7 @@ h2 {
 }
 .impacto-item .numero {
   font-family: 'DM Serif Display', serif;
-  font-size: 3.8rem;
+  font-size: clamp(2.6rem, 8vw, 3.8rem);
   color: #e85444;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -411,7 +430,7 @@ h2 {
   border-top: 1px solid rgba(0, 0, 176, 0.2);
 }
 .cta h2 {
-  font-size: 2.8rem;
+  font-size: clamp(2rem, 6vw, 2.8rem);
   max-width: 700px;
   margin: 0 auto 1.2rem;
 }
@@ -479,6 +498,28 @@ footer {
 
 /* Tablets y pantallas medianas */
 @media (max-width: 900px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+  .nav-toggle {
+    display: flex;
+  }
+  .nav-links {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.2rem 0 0.4rem;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 176, 0.15);
+  }
+  .nav-links.open {
+    display: flex;
+  }
+  .nav-links a {
+    font-size: 1.05rem;
+  }
+  
   .hero,
   .intro {
     grid-template-columns: 1fr;
@@ -513,8 +554,27 @@ footer {
 
 /* Móviles */
 @media (max-width: 600px) {
-  .nav-links {
-    display: none;
+  .hero-texto {
+    text-align: center;
+  }
+  .hero-texto p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-botones {
+    justify-content: center;
+  }
+  .intro,
+  .impacto,
+  .historias,
+  .talleres,
+  .diario,
+  .galeria-fotos,
+  .cta {
+    padding: 2.6rem 0;
+  }
+  .impacto-item {
+    flex: 1 1 40%;
   }
   
   .historias-grid,

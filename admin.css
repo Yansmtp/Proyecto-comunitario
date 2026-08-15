@@ -1,6 +1,6 @@
 /* ============================================================
    admin.css - Panel de administración de Tejiendo Vida
-   Paleta: azul marino (#17294a) + coral (#ff6f61)
+   Paleta: azul marino (#0000B0) + coral (#ff6f61)
    ============================================================ */
 * {
   margin: 0;
@@ -80,7 +80,7 @@ button {
   padding: 2rem;
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 111, 97, 0.08), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(23, 42, 74, 0.14), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(0, 0, 176, 0.14), transparent 45%),
     #f6f7fc;
 }
 .login-card {
@@ -89,14 +89,14 @@ button {
   background: #fff;
   padding: 2.5rem;
   border-radius: 20px;
-  box-shadow: 0 24px 50px -20px rgba(23, 42, 74, 0.35);
+  box-shadow: 0 24px 50px -20px rgba(0, 0, 176, 0.35);
 }
 .login-logo,
 .admin-logo {
   font-family: 'DM Serif Display', serif;
   font-size: 1.7rem;
   letter-spacing: -0.02em;
-  color: #172a4a;
+  color: #0000B0;
 }
 .login-logo span,
 .admin-logo span {
@@ -134,7 +134,7 @@ button {
 
 /* ===== CABECERA ===== */
 .admin-header {
-  background: #17294a;
+  background: #0000B0;
   color: #fff;
 }
 .admin-header-inner {
@@ -234,8 +234,8 @@ button {
 .admin-tabs button.activo {
   background: #fff;
   border-left-color: #ff6f61;
-  color: #172a63;
-  box-shadow: 0 4px 12px -6px rgba(23, 42, 74, 0.25);
+  color: #0000B0;
+  box-shadow: 0 4px 12px -6px rgba(0, 0, 176, 0.25);
 }
 
 .admin-toolbar {
@@ -249,7 +249,7 @@ button {
 .admin-toolbar h1 {
   font-family: 'DM Serif Display', serif;
   font-weight: 400;
-  color: #172a4a;
+  color: #0000B0;
   font-size: 1.8rem;
 }
 
@@ -277,7 +277,7 @@ button {
   margin-bottom: 1.5rem;
 }
 .form-card h3 {
-  color: #172a4a;
+  color: #0000B0;
   margin-bottom: 1rem;
   font-weight: 600;
 }
@@ -334,7 +334,7 @@ button {
   min-width: 200px;
 }
 .item-info h4 {
-  color: #172a4a;
+  color: #0000B0;
   font-size: 1rem;
   margin-bottom: 0.2rem;
 }
@@ -449,7 +449,7 @@ button {
   border: 1px solid #e3e9f4;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 20px 40px -20px rgba(23, 42, 74, 0.4);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 176, 0.4);
 }
 .preview-bar {
   display: flex;
@@ -457,7 +457,7 @@ button {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.7rem 1rem;
-  background: #17294a;
+  background: #0000B0;
   color: #fff;
 }
 .preview-titulo {
@@ -498,7 +498,7 @@ button {
   border-radius: 12px;
   padding: 1rem 1.1rem;
   max-width: 380px;
-  box-shadow: 0 20px 40px -15px rgba(23, 42, 74, 0.4);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 176, 0.4);
   animation: toast-in 0.25s ease;
 }
 .toast.toast-error {
@@ -517,7 +517,7 @@ button {
   gap: 0.15rem;
 }
 .toast-body strong {
-  color: #17294a;
+  color: #0000B0;
   font-size: 1rem;
 }
 .toast-body span {
@@ -535,7 +535,7 @@ button {
   padding: 0;
 }
 .toast-close:hover {
-  color: #17294a;
+  color: #0000B0;
 }
 @keyframes toast-in {
   from { opacity: 0; transform: translateY(12px); }
